@@ -1,7 +1,10 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import {
+  removeFromCloudinary,
+  uploadOnCloudinary,
+} from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 
@@ -262,6 +265,11 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 });
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
+  const avatarCloudinaryUrl = req.user?.avatar;
+  const avatarCloudinaryName = avatarCloudinaryUrl.substring(61, 81);
+
+  await removeFromCloudinary(avatarCloudinaryName);
+
   const avatarLocalPath = req.file?.path;
 
   if (!avatarLocalPath) {
@@ -290,6 +298,11 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 });
 
 const updateUserCoverImage = asyncHandler(async (req, res) => {
+  const coverImageCloudinaryUrl = req.user?.coverImage;
+  const coverImageCloudinaryName = coverImageCloudinaryUrl.substring(61, 81);
+
+  await removeFromCloudinary(coverImageCloudinaryName);
+
   const coverImageLocalPath = req.file?.path;
 
   if (!coverImageLocalPath) {
