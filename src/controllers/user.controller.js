@@ -92,6 +92,13 @@ const loginUser = asyncHandler(async (req, res) => {
   //password check
   //access and refresh token
   //send cookie
+  const existingUser =
+    req.cookies?.accessToken ||
+    req.header("Authorization")?.replace("Bearer ", "");
+
+  if (existingUser) {
+    throw new ApiError(401, "Already logged in!!");
+  }
 
   const { email, username, password } = req.body;
 
