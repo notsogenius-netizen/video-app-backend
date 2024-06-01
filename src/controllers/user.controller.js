@@ -7,8 +7,6 @@ import {
 } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
-import { subscription } from "../models/subscription.model.js";
-import mongoose from "mongoose";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { fullname, username, email, password } = req.body;
